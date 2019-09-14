@@ -2,6 +2,11 @@ import { ApolloServer } from 'apollo-server-express'
 import express from 'express'
 import typeDefs from './typeDefs'
 import resolvers from './resolvers'
+import db from '../config/db'
+import mongoose from 'mongoose'
+
+mongoose.Promise = global.Promise
+mongoose.connect(db)
 
 const app = express()
 
