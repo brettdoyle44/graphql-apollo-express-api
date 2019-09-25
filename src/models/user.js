@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { hash } from 'bcryptjs'
+import { hash, compare } from 'bcryptjs'
 
 const userSchema = new mongoose.Schema(
   {
@@ -31,6 +31,10 @@ userSchema.pre('save', async function() {
     this.password = await hash(this.password, 10)
   }
 })
+
+userSchema.methods.matchesPassword = function(password) {
+  return compare(password, this.password)
+}
 
 userSchema.statics.doesntExist = async function(options) {
   return (await this.where(options).countDocuments()) === 0
